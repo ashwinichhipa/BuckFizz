@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>BuckFizz</title>
+
+   <link href="css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="//code.angularjs.org/snapshot/angular.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    
+	<!-- CSS -->
+    <style>
+    body {
+        padding-top: 50px;
+		background-image: url("maths4.jpg");
+	}
+	.table-fixed{
+	  width: 100%;
+	  tbody{
+		height:80px;
+		overflow-y:scroll; !important
+		display: inline-block;
+		width: 100%;
+		}
+	  thead,tbody,tr,td,th{
+		display:block;
+	  }
+	  tbody{
+		td{
+		  float:left;
+		}
+	  }
+	  thead {
+		tr{
+		  th{
+			float:left;
+			border-color:#e67e22;
+		  }
+		}
+	  }
+	}
+	img.gravatar {
+		width: 40px;
+		height: 40px;
+		float:left;
+		margin-right:10px;
+	}
+    </style>
+</head>
+
+<body ng-app="BuckFizz" ng-controller="BuckFizzController">
+<script src="js/app.js"></script>
+    <div class="container buckfizzclass"> 		
+		<div class="row">
+            <div class="col-lg-12 text-center">
+                <h1>Buck Fizz Assignment</h1>
+                <p class="lead">1, 2, 3 feeling fizzy? Take 5 Bucks. </p>
+            </div>
+        </div>
+		<div class="row">
+			<div class="col-md-3">
+				&nbsp;
+			</div>
+			<div class="col-md-6">
+				<br/>
+				<form name="BuckFizzForm">
+				   <div class="row">
+					<label for="initial" class="control-label col-xs-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;From:</label>
+					<div class="col-xs-3">
+						<input type="number" class="form-control pull-right" name="inputinitial" ng-model="inputinitial" placeholder="Start" min=1 required>
+					</div>
+					<label for="final" class="control-label col-xs-1">To:</label>
+					<div class="col-xs-3">
+						<input type="number" class="form-control pull-right" name="inputfinal" ng-model="inputfinal" placeholder="End" min={{inputinitial}} required>
+					</div>
+					<div class="col-xs-3">
+						<button type="button" class="btn btn-primary" name="submit_button" ng-click="returnOutput()" ng-disabled="BuckFizzForm.$invalid">Submit</button>
+					</div>
+				   </div>
+				</form>
+			</div>
+			<div class="col-md-3">
+				&nbsp;
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				&nbsp;
+			</div>
+			<div class="table-responsive col-md-6">
+				<br/><br/>
+				<table class="table table-hover table-fixed" style="overflow: auto; height: 250px; display:block;">
+					<thead>
+						<tr>
+							<th style="width:400px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Actual No.</th>
+							<th style="width:400px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BuckFizz No.</th>
+						</tr>
+					</thead>
+					<tbody ng-if="outputData == null"> 
+						<td style="width:400px" colspan="2" align="center" >Please select the range !</td>
+					</tbody>
+					<tbody ng-if="outputData.length > 0" >
+						<tr ng-repeat='number in outputData'>
+							<td align="center" style="width:400px">{{number.user}}</td>
+							<td align="center" style="width:400px">{{number.lang}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-md-3">
+				&nbsp;
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-3">
+				&nbsp;
+			</div>
+			<div class="col-md-6">
+				<pre align="Center">Mock RESTful API : Github Profile </pre>
+			</div>
+		</div>
+		<div class="row">
+			<br/>
+			<div class="col-md-3">
+				&nbsp;
+			</div>
+			<div class="col-md-6">
+				<form name="GitUserDataForm">
+					<div class=" form-group col-xs-6">
+						<input type="text" class="form-control" ng-model="gitHubUsername" placeholder="GitHub Username" required>
+					</div>
+					<div class=" form-group col-xs-6">
+						<button type="button" class="btn btn-primary" ng-click="fetchUser()" ng-disabled="GitUserDataForm.$invalid">Fetch User Data</button>
+					</div>
+				</form>
+			</div>
+			<div class="col-md-3">
+				&nbsp;
+			</div>
+		</div>
+		<div class="row">
+		<br/>
+			<div class="col-md-3">
+				&nbsp;
+			</div>
+			<div class="col-md-6">
+				<ul>
+					<li ng-class="{odd: $odd}" ng-repeat="user in users">
+						<img class="gravatar" ng-src="{{ user.profile.avatar_url }}" /> <b>{{ user.profile.login }}</b> ({{ user.profile.location }})
+						<div class="event">{{ user.profile.events[0].type }} : {{ user.profile.events[0].repo.name }}</div>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-3">
+				&nbsp;
+			</div>
+		</div>
+    </div>
+   <script src="js/jquery.js"></script>
+   <script src="js/bootstrap.min.js"></script>
+
+   <div class="row">
+	<div class="col-lg-9"> &nbsp;</div>
+	<div class="col-lg-3">
+		<b>
+		Date : {{date | date:'yyyy-MM-dd'}} <br/>
+		Submitted By : Ashwini Chhipa</b>
+	</div>
+   </div>
+</body>
+
+</html>
